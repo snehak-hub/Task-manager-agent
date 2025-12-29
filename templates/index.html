@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Task Manager AI</title>
+    <style>
+        body { font-family: Arial; background: #f4f4f4; }
+        .chat { width: 60%; margin: auto; margin-top: 50px; }
+        .box { background: white; padding: 15px; border-radius: 5px; }
+        input { width: 80%; padding: 10px; }
+        button { padding: 10px; }
+    </style>
+</head>
+<body>
+<div class="chat">
+    <h2>🧠 Task Manager AI</h2>
+    <div id="messages" class="box"></div><br>
+    <input id="msg" placeholder="Ask anything or manage tasks..." />
+    <button onclick="send()">Send</button>
+</div>
+
+<script>
+function send() {
+    const msg = document.getElementById("msg").value;
+    fetch("/chat", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({message: msg})
+    })
+    .then(res => res.json())
+    .then(data => {
+        document.getElementById("messages").innerHTML +=
+            "<p><b>You:</b> " + msg + "</p>" +
+            "<p><b>AI:</b> " + data.reply + "</p>";
+        document.getElementById("msg").value = "";
+    });
+}
+</script>
+</body>
+</html>
